@@ -250,7 +250,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);//翻转LED状态
       HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_9);//翻转外接LED状态
     }
-  //  key_state_per = key_state_cur;//保存当前按键状态
+    key_state_per = key_state_cur;//保存当前按键状态
   }
 }
 /* USER CODE END 4 */
