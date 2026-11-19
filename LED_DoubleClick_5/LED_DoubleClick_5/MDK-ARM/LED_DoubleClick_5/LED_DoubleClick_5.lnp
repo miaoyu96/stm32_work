@@ -1,0 +1,23 @@
+--cpu Cortex-M3
+"led_doubleclick_5\startup_stm32f103xb.o"
+"led_doubleclick_5\main.o"
+"led_doubleclick_5\stm32f1xx_it.o"
+"led_doubleclick_5\stm32f1xx_hal_msp.o"
+"led_doubleclick_5\stm32f1xx_hal_gpio_ex.o"
+"led_doubleclick_5\stm32f1xx_hal_tim.o"
+"led_doubleclick_5\stm32f1xx_hal_tim_ex.o"
+"led_doubleclick_5\stm32f1xx_hal.o"
+"led_doubleclick_5\stm32f1xx_hal_rcc.o"
+"led_doubleclick_5\stm32f1xx_hal_rcc_ex.o"
+"led_doubleclick_5\stm32f1xx_hal_gpio.o"
+"led_doubleclick_5\stm32f1xx_hal_dma.o"
+"led_doubleclick_5\stm32f1xx_hal_cortex.o"
+"led_doubleclick_5\stm32f1xx_hal_pwr.o"
+"led_doubleclick_5\stm32f1xx_hal_flash.o"
+"led_doubleclick_5\stm32f1xx_hal_flash_ex.o"
+"led_doubleclick_5\stm32f1xx_hal_exti.o"
+"led_doubleclick_5\system_stm32f1xx.o"
+--strict --scatter "LED_DoubleClick_5\LED_DoubleClick_5.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "LED_DoubleClick_5.map" -o LED_DoubleClick_5\LED_DoubleClick_5.axf
