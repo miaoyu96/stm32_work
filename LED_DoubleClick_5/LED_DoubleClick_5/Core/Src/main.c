@@ -58,8 +58,10 @@ static void MX_TIM1_Init(void);
 /* USER CODE BEGIN 0 */
 volatile uint8_t key_state_pre=1;//按键的上一次状态
 volatile uint8_t key_state_cur=1;//按键的当前状态
-volatile uint8_t time_cnt=0;//按键次数
+volatile uint8_t key_cnt=0;//按键次数
 volatile uint8_t time_cnt=0;//时间计数
+uint8_t raw_cur ;//检测到的电位，若正常再转移至key_state_cur
+uint8_t key_press=0;//检测到电位变化就+1，用于消抖
 /* USER CODE END 0 */
 
 /**
@@ -100,11 +102,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if(time_cnt == 2 && time_cnt <= 10)//判断第二次按下是否小于500ms
+    if(key_cnt == 2 && time_cnt <= 10)//判断第二次按下是否小于500ms
     {
       HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
       HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_9);
-      time_cnt=0;
+      key_cnt=0;
       time_cnt=0;
     }
  
@@ -249,17 +251,33 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if(htim->Instance==TIM1)//判断是否是定时器1
   {
-    key_state_cur=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0);
-    if(key_state_cur==0 && key_state_pre==1)
+    raw_cur=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0);//临时记录电位
+    if(key_state_cur != key_state_pre)
     {
-      time_cnt+=1; 
-      if(time_cnt == 1)//第一次按下，开始计时
+      key_press = 0;
+    }
+    else
+    {
+      key_press++;
+    }
+    if(key_press >=2)
+    {
+      key_state_cur = raw_cur;
+    }
+    else
+    {
+      key_state_cur = key_state_pre;
+    }
+    if(key_state_cur == 0 && key_state_pre == 1)
+    {
+      key_cnt+=1; 
+      if(key_cnt == 1)//第一次按下，开始计时
       {
       time_cnt=0;
       }
       else if(time_cnt > 10)//超时
       {
-      time_cnt=0;
+      key_cnt=0;
       time_cnt=0;
       }
     }
