@@ -58,7 +58,7 @@ static void MX_TIM1_Init(void);
 /* USER CODE BEGIN 0 */
 static uint8_t key_state_per = 1 ;//上一次按键状态
 static uint8_t key_state_cur =1;//当前按键状态
-static uint8_t key_cnt = 0;//按键计数
+static uint8_t time_cnt = 0;//按键计数
 
 /* USER CODE END 0 */
 
@@ -248,14 +248,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     key_state_cur = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);//读取
     if(key_state_per != key_state_cur )
     {
-      key_cnt = 0;
+      time_cnt = 0;
       key_state_per = key_state_cur;//保存当前按键状态
     }
 
     else 
       {
-        key_cnt++;
-        if(key_cnt == 2 && key_state_cur == 0)
+        time_cnt++;
+        if(time_cnt == 2 && key_state_cur == 0)
         {
         HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
         HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_9);

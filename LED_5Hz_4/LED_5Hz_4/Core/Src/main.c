@@ -61,8 +61,9 @@ uint8_t key_state_per = 1 ;//上一次按键状态
 uint8_t key_state_cur =1;//当前按键状态
 uint8_t key_short_flag = 0;//按键短按标志
 uint8_t key_long_flag = 0;//按键长按标志
-uint8_t key_cnt = 0;//按键时间计数,20ms计一次
+uint8_t time_cnt = 0;//按键时间计数,20ms计一次
 uint16_t tick = 0;//系统滴答计数
+uint8_t key_cnt = 0;//检测到按键触发次数
 /* USER CODE END 0 */
 
 /**
@@ -277,23 +278,23 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     key_state_cur = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
     if(key_state_cur == 0 && key_state_per != key_state_cur)//按键刚刚按下
     {
-        key_cnt = 0;
+        time_cnt = 0;
     }
     else if(key_state_cur == 0 && key_state_per == key_state_cur)//按键保持按下
     {
-      key_cnt++;
+      time_cnt++;
     }
     else if(key_state_cur == 1 && key_state_per != key_state_cur)//按键刚刚松开,判断按键按下时间长短
     {
-        if(key_cnt >= 50 )//识别触发长按
+        if(time_cnt >= 50 )//识别触发长按
       {
         key_long_flag = 1;
       }
-        else //识别触发短按
+        else if(time_cnt >= 2) //识别触发短按,过滤抖动
       {
         key_short_flag = 1;
       }
-      key_cnt = 0;
+      time_cnt = 0;
     }
       tick++;
       key_state_per = key_state_cur;

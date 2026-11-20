@@ -58,7 +58,7 @@ static void MX_TIM1_Init(void);
 /* USER CODE BEGIN 0 */
 volatile uint8_t key_state_pre=1;//按键的上一次状态
 volatile uint8_t key_state_cur=1;//按键的当前状态
-volatile uint8_t key_cnt=0;//按键次数
+volatile uint8_t time_cnt=0;//按键次数
 volatile uint8_t time_cnt=0;//时间计数
 /* USER CODE END 0 */
 
@@ -100,11 +100,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if(key_cnt == 2 && time_cnt <= 10)//判断第二次按下是否小于500ms
+    if(time_cnt == 2 && time_cnt <= 10)//判断第二次按下是否小于500ms
     {
       HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
       HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_9);
-      key_cnt=0;
+      time_cnt=0;
       time_cnt=0;
     }
  
@@ -252,14 +252,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     key_state_cur=HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0);
     if(key_state_cur==0 && key_state_pre==1)
     {
-      key_cnt+=1; 
-      if(key_cnt == 1)//第一次按下，开始计时
+      time_cnt+=1; 
+      if(time_cnt == 1)//第一次按下，开始计时
       {
       time_cnt=0;
       }
       else if(time_cnt > 10)//超时
       {
-      key_cnt=0;
+      time_cnt=0;
       time_cnt=0;
       }
     }
