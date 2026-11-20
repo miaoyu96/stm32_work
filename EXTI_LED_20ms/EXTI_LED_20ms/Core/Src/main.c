@@ -56,6 +56,9 @@ static void MX_TIM1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+static uint8_t key_state_per = 1 ;//上一次按键状态
+static uint8_t key_state_cur =1;//当前按键状态
+static uint8_t key_cnt = 0;//按键计数
 
 /* USER CODE END 0 */
 
@@ -163,7 +166,7 @@ static void MX_TIM1_Init(void)
 
   /* USER CODE END TIM1_Init 1 */
   htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 7199;
+  htim1.Init.Prescaler = 799;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim1.Init.Period = 199;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -238,19 +241,26 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-static uint8_t key_state_per = 1 ;//上一次按键状态
-static uint8_t key_state_cur =1;//当前按键状态
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim == &htim1)
   {
-    key_state_cur = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);//读取按钮状态
-    if(key_state_per != key_state_cur && key_state_cur == 0)//判断按钮状态是否改变且为按下状态
+    key_state_cur = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);//读取
+    if(key_state_per != key_state_cur )
     {
-      HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);//翻转LED状态
-      HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_9);//翻转外接LED状态
+      key_cnt = 0;
+      key_state_per = key_state_cur;//保存当前按键状态
     }
-    key_state_per = key_state_cur;//保存当前按键状态
+
+    else 
+      {
+        key_cnt++;
+        if(key_cnt == 2 && key_state_cur == 0)
+        {
+        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+        HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_9);
+        }
+      }
   }
 }
 /* USER CODE END 4 */
