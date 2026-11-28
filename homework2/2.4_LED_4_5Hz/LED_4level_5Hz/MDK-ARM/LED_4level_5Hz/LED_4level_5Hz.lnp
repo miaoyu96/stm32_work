@@ -1,0 +1,23 @@
+--cpu Cortex-M3
+"led_4level_5hz\startup_stm32f103xb.o"
+"led_4level_5hz\main.o"
+"led_4level_5hz\stm32f1xx_it.o"
+"led_4level_5hz\stm32f1xx_hal_msp.o"
+"led_4level_5hz\stm32f1xx_hal_gpio_ex.o"
+"led_4level_5hz\stm32f1xx_hal_tim.o"
+"led_4level_5hz\stm32f1xx_hal_tim_ex.o"
+"led_4level_5hz\stm32f1xx_hal.o"
+"led_4level_5hz\stm32f1xx_hal_rcc.o"
+"led_4level_5hz\stm32f1xx_hal_rcc_ex.o"
+"led_4level_5hz\stm32f1xx_hal_gpio.o"
+"led_4level_5hz\stm32f1xx_hal_dma.o"
+"led_4level_5hz\stm32f1xx_hal_cortex.o"
+"led_4level_5hz\stm32f1xx_hal_pwr.o"
+"led_4level_5hz\stm32f1xx_hal_flash.o"
+"led_4level_5hz\stm32f1xx_hal_flash_ex.o"
+"led_4level_5hz\stm32f1xx_hal_exti.o"
+"led_4level_5hz\system_stm32f1xx.o"
+--strict --scatter "LED_4level_5Hz\LED_4level_5Hz.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "LED_4level_5Hz.map" -o LED_4level_5Hz\LED_4level_5Hz.axf
